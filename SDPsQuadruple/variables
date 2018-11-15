@@ -1,0 +1,18 @@
+y1= y_{omega_0}
+y2= y_{omega_8}
+y3= y_{omega_{10}}
+y4= y_{omega_{12}}
+y5= y_{omega_{14}}
+y6= y_{omega_{16}}
+y7= y_{omega_{18}}
+y8= y_{omega_{20}}
+
+and in case of 22_8_11:
+y9= y_{omega_{22}}  (For 22_8_10 there cannot be two words at distance 22, as the maximum possible distance for two words of weight 10 is 2*10=20.)
+
+Here y_{omega_t} is as described in the paper.
+
+The other y-variables are not important for our purposes (but a list can be obtained by running W234DEF.java).
+
+
+

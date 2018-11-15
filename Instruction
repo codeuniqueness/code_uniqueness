@@ -1,0 +1,118 @@
+Programs used for the paper "Uniqueness of codes based on semidefinite programming", by Andries Brouwer and Sven Polak
+
+************************************************************************
+The SDP's based on triples to verify the claims in the proofs of Propositions 4.2-4.4 can be found in the folder "SDPsTriple".
+
+
+*** To verify the SDP-output for Proposition 4.2:
+Compile: javac CheckDualAndVariables.java
+Run: java CheckDualAndVariables
+File name of .dat-s-file (including .dat-s)
+CW3tal_23_8_11.dat-s
+File name of .result-file (including .result)
+23_8_11_precise.result
+File name of variables file (including .txt)
+monomialrepresentatives_triples_23_8_11.txt
+
+
+*** To verify the SDP-output for Proposition 4.3 (GIVEN that a_{14}=0):
+Compile: javac CheckDualAndVariables.java
+Run: java CheckDualAndVariables
+File name of .dat-s-file (including .dat-s)
+CW3tal_22_8_11dist.dat-s
+File name of .result-file (including .result)
+22_8_11dist_precise.result
+File name of variables file (including .txt)
+monomialrepresentatives_triples_22_8_11.txt
+
+To verify that a_{14}=0 in any (22,8,11)-code of size 672, see the folder SDPsQuadruple (explanation below).
+
+
+*** To verify the SDP-output for Proposition 4.4 (GIVEN that a_{14}=0):
+Compile: javac CheckDualAndVariables.java
+Run: java CheckDualAndVariables
+File name of .dat-s-file (including .dat-s)
+CW3tal_22_8_10dist.dat-s
+File name of .result-file (including .result)
+22_8_10dist_precise.result
+File name of variables file (including .txt)
+monomialrepresentatives_triples_22_8_10.txt
+
+
+To verify that a_{14}=0 in any (22,8,10)-code of size 610, see the folder SDPsQuadruple (explanation below).
+
+SDPs in folder SDPsTriple:
+*CW3tal_23_8_11.sdp : this is the program A_3(23,8,11)
+*CW3tal_22_8_10dist.sdp : this is the program A_3(22,8,10) WITH THE ADDED CONSTRAINT that a_{14}=0.
+*CW3tal_22_8_11dist.sdp : this is the program A_3(22,8,11) WITH THE ADDED CONSTRAINT that a_{14}=0.
+
+W3.java: The SDP A3(n,d,w) based on triples is generated with this program. It uses the package MapDB (http://www.mapdb.org/). 
+To compile: javac -cp mapdb.jar: W3.java
+To run: java -cp mapdb.jar: W3 n d w (for example: java -cp mapdb.jar: W3 23 8 11)
+The output is a .sdp-file containing the explicit SDP "CW3tal_n_d_w.sdp"  (where only the upper triangle of every matrix is printed).
+A side product is a file containing a description of the variables used in the SDP: "monomialrepresentatives_triples_n_d_w.txt". Here Sn-orbits of codes of size <= 3 are represented as polynomials in variables x_ijk, with i,j,k in {0,1}. For example: the monomial x010x101x110x111 represents the code {0111,1011,0101}. The monomial x011x011x100x100 represents the code {0011,1100,1100}={0011,1100}. The variable y_i in the .sdp-file "CW3tal_n_d_w.sdp" corresponds with the i-th line of the file in "monomialrepresentatives_triples_n_d_w.txt".
+
+To convert a .sdp-file to an input file (.dat-s) for SDPA-GMP or SDPA-DD, one can use the pearl program sdp2dats.pl (written by Lex Schrijver). Example command: perl sdp2dats.pl CW3tal_23_8_11.
+The variables get new numbers in the .dat-s file in the order in which they appear in the .sdp-file, and the program outputs which number corresponds to which y_i-variable from the sdp. 
+
+Then, the SDP is solved using SDPA_GMP, generating a ".result"-file. See for example "23_8_11_precise.result". In the .result-file one can also read which parameters were used to solve the SDP.
+
+The check that the dual solution is positive definite, and the exact computation of the errors from the output file (as described in the Appendix of the paper) is done with the program "CheckDualAndVariables.java". 
+Compile with: java CheckDual.java
+Run with: java CheckDual
+The program asks for the file name of a .dat-s file and the file name of a .result-file and for a .txt-file with the variables. (Note that the program reads the "Dual Matrix Y", because the dual solution in a .result file from SDPA_GMP is called "Y". In the paper this dual solution Y is called X.) The program also outputs the non-forbidden variables (with a non-forbidden treshold of 10^(-50), but this can be changed in the code).
+
+
+
+************************************************************************
+The SDP's based on quadruples to verify that a_14=0 in any (22,8,10)-code of size 616 or (22,8,11)-code of size 672 can be found in the folder "SDPsQuadruple".
+
+**FIRST UNZIP dats-filesQUAD.zip, result-filesQUAD.zip and sdp-filesQUAD.zip.
+
+**** Proposition 4.3.
+To verify the SDP-output which shows that a_{14}=0 in any (22,8,10)-code of size 616 (as the SDP with the added constraint from Prop 5.5 has an objective value B^*_4(22,8,10)<615.953<616):
+Compile: javac CheckDualLargeSDP.java
+Run: java CheckDualLargeSDP
+File name of .dat-s-file (including .dat-s)
+CW34DEF_22_8_10quad_distoddpos.dat-s
+File name of .result-file (including .result)
+22_8_10quad_distoddpos.result
+
+
+**** Proposition 4.4.
+To verify the SDP-output which shows that a_{14}=0 in any (22,8,11)-code of size 672 (as the SDP with the added constraint from Prop 5.6 has an objective value  B^*_4(22,8,11)<671.885<672):
+Compile: javac CheckDualLargeSDP.java
+Run: java CheckDualLargeSDP
+File name of .dat-s-file (including .dat-s)
+CW34DEF_22_8_11quad_distoddpos.dat-s
+File name of .result-file (including .result)
+22_8_11quad_distoddpos.result
+
+
+SDPs in the folder SDPsQuadruple:
+*CW34DEF_22_8_10quad_distoddpos : this is the program B_4^*(22,8,10) described in the appendix of the paper. It is the program B_4(22,8,10) WITH THE ADDED CONSTRAINT THAT a_14 >= 2/616 and a_10+a_14+a_18 >= 208/616 (see Proposition 5.5)
+*CW34DEF_22_8_11quad_distoddpos : this is the program B_4^*(22,8,11) described in the appendix of the paper. It is the program B_4(22,8,11) WITH THE ADDED CONSTRAINT THAT a_14 >= 2/672 and a_10+a_14+a_18+a_22 >= 318/672 (see Proposition 5.6)
+
+W342DEF.java: The SDP B4(n,d,w) based on quadruples of codewords is generated with this program. It uses the package MapDB (http://www.mapdb.org/). 
+To compile: javac -cp mapdb.jar: W342DEF.java
+To run: java -cp mapdb.jar: W342DEF n d w (for example: java -cp mapdb.jar: W342DEF 22 8 10)
+The output is a .sdp-file containing the explicit SDP "CW34DEF_n_d_w.sdp"  (where only the upper triangle of every matrix is printed).
+A side product is a file containing a description of the variables used in the SDP: "monomialrepresentatives_triples_n_d_w.txt". Here Sn-orbits of codes of size <= 4 are represented as polynomials in variables x_ijkl, with i,j,k,l in {0,1}. The variable y_i in the .sdp-file "CW34DEF_n_d_w.sdp" corresponds with the i-th line of the file in "monomialrepresentatives_quadruples_n_d_w.txt".
+
+To convert a .sdp-file to an input file (.dat-s) for SDPA-GMP or SDPA-DD, one can use the pearl program sdp2dats.pl (written by Lex Schrijver). Example command: perl sdp2dats.pl CW34DEF_22_8_10.
+The variables get new numbers in the .dat-s file in the order in which they appear in the .sdp-file, and the program outputs which number corresponds to which y_i-variable from the sdp. 
+
+Then, the SDP is solved using SDPA_DD, generating a ".result"-file. See for example "22_8_10quad_distoddpos.result". In the .result-file one can also read which parameters were used to solve the SDP.
+
+The check that the dual solution is positive definite, and the exact computation of the errors from the output file (as described in the Appendix of the paper) is done with the program "CheckDualLargeSDP.java". 
+ 
+We find B^*_4(22,8,10)<615.953<616, so a_{14}=0 in any (22,8,10)-code of size 616. Moreover, B^*_4(22,8,11)<671.885<672, so a_{14}=0 in any (22,8,11)-code of size 672.
+
+Note that for (n,d,w)=(22,8,11) we have w=n/2. In this case, an extra reduction of the number of variables can be obtained, since adding the all-ones word to each word also gives a weight- and distance- preserving permutation of N (notation as in the paper). This more reduced sdp can be generated with "W342HALFDEF.java" (which only works for w=n/2).
+
+As a last remark, note that in the computation of the two quadruple SDPs we divided one 2x2 matrix block by (n choose w), except for the top left entry. That is, we used the description (56) from [Semidefinite programming bounds for constant weight codes, Sven Polak, arXiv:1703.0517]. So y_(omega_0) is not bounded above by 1 anymore, but by B_4(n,d,w) (as the program reads "Max y_(omega_0) Subject to.."), which is known to be smaller than the delsarte bound, which is smaller than 1000 for both cases of (n,d,w) considered in the present paper. Moreover, y_{omega_0} is still an upper bound for all other variables from the SDP. So to verify the results, it suffices to multiply the error term in (15) from the present paper by 1000, that is: 0 \leq <F_empty, X > - |C| +1000 *(sum of the absolute values of the eps_i), with <F_empty,X> the dual approximate optimal value. This gives |C| \leq <F_empty,X> +1000* (sum of the absolute values of the eps_i).
+
+
+
+************************************************************************
+The LP's (for (n,d,w)=(24,8,12) and (n,d)=(20,8)) and their outputs can be found in the folder "LP". The dual solution of the LPs was also checked with the program "CheckDual".  
